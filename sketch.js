@@ -18,8 +18,8 @@ function setup() {
   // generate random number for hue value of hsb
   imgTint = randomInt(101);
   // creat random starting point for logo
-  x = randomInt(width);
-  y = randomInt(height);
+  x = randomInt(windowWidth);
+  y = randomInt(windowHeight);
 }
 
 function draw() {
@@ -29,11 +29,11 @@ function draw() {
 
 function drawImage() {
   // change to random color every time the logo collides with an edge
-  if (x > windowWidth - dvdLogo.width || x < 0) {
+  if (x >= windowWidth - dvdLogo.width || x <= 0) {
     xSpeed *= -1;
     imgTint = randomInt(101);
   }
-  if (y > windowHeight - dvdLogo.height || y < 0) {
+  if (y >= windowHeight - dvdLogo.height || y <= 0) {
     ySpeed *= -1;
     imgTint = randomInt(101);
   }
@@ -64,6 +64,14 @@ function randomInt(max){
   return Math.floor(Math.random() * max);
 }
 
+
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  resizeCanvas(windowWidth, windowHeigh);
+  x = randomInt(windowWidth);
+  xSpeed = 1;
+  y = randomInt(windowHeight);
+  ySpeed = 1;
+  
 }
+
+
