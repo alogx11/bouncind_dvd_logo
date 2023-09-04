@@ -4,13 +4,13 @@ let xSpeed, ySpeed;
 let speed;
 let imgTint;
 
-
 function preload() {
   dvdLogo = loadImage("./assets/dvd_logo.png");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  // speed logo moves on screen
   speed = 5;
   xSpeed = speed;
   ySpeed = speed;
@@ -18,8 +18,8 @@ function setup() {
   // generate random number for hue value of hsb
   imgTint = randomInt(101);
   // creat random starting point for logo
-  x = randomInt(windowWidth);
-  y = randomInt(windowHeight);
+  x = randomInt(windowWidth - dvdLogo.width);
+  y = randomInt(windowHeight - dvdLogo.height);
 }
 
 function draw() {
@@ -37,8 +37,10 @@ function drawImage() {
     ySpeed *= -1;
     imgTint = randomInt(101);
   }
+  // move logo
   x += xSpeed;
   y += ySpeed;
+
   tint(imgTint, 100, 100);
   image(dvdLogo, x, y);
 }
@@ -64,13 +66,29 @@ function randomInt(max){
   return Math.floor(Math.random() * max);
 }
 
-
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeigh);
-  x = randomInt(windowWidth);
-  xSpeed = 1;
-  y = randomInt(windowHeight);
-  ySpeed = 1;
+  resizeCanvas(windowWidth, windowHeight);
+  // keep logo on screen
+  // logo is hitting edge as window becomes smaller so count as collision
+  if (x >= windowWidth - dvdLogo.width || x <= 0) {
+    xSpeed *= -1;
+    if(x <= 0){
+      x = 0;
+    } else {
+    x = windowWidth - dvdLogo.width;
+    }
+    imgTint = randomInt(101);
+  }
+  if (y >= windowHeight - dvdLogo.height || y <= 0) {
+    ySpeed *= -1;
+    if(y <= 0){
+      y = 0;
+    } else {
+    y = windowHeight - dvdLogo.height;
+    }
+    
+    imgTint = randomInt(101);
+  }
   
 }
 
