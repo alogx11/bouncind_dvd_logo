@@ -1,8 +1,13 @@
 ﻿let dvdLogo;
+// x, y position for dvd logo
 let x, y;
+// speed image moves
 let xSpeed, ySpeed;
 let speed;
+// H value for hsb when tinting image
 let imgTint;
+// delay in ms for color change after colliding with edge
+let tintDeley;
 
 function preload() {
   dvdLogo = loadImage("./assets/dvd_logo.png");
@@ -14,9 +19,10 @@ function setup() {
   speed = 5;
   xSpeed = speed;
   ySpeed = speed;
+  tintDeley = 200;
   colorMode(HSB, 100);
   // generate random number for hue value of hsb
-  imgTint = randomInt(101);
+  changeTint();
   // creat random starting point for logo
   x = randomInt(windowWidth - dvdLogo.width);
   y = randomInt(windowHeight - dvdLogo.height);
@@ -31,18 +37,25 @@ function drawImage() {
   // change to random color every time the logo collides with an edge
   if (x >= windowWidth - dvdLogo.width || x <= 0) {
     xSpeed *= -1;
-    imgTint = randomInt(101);
+    setTimeout(changeTint, tintDeley);
   }
   if (y >= windowHeight - dvdLogo.height || y <= 0) {
     ySpeed *= -1;
-    imgTint = randomInt(101);
+    setTimeout(changeTint, tintDeley);
+
   }
   // move logo
   x += xSpeed;
   y += ySpeed;
 
-  tint(imgTint, 100, 100);
+ 
   image(dvdLogo, x, y);
+}
+
+function changeTint(){
+  imgTint = randomInt(101);
+  tint(imgTint, 100, 100);
+
 }
 
 /*
@@ -77,7 +90,7 @@ function windowResized() {
     } else {
     x = windowWidth - dvdLogo.width;
     }
-    imgTint = randomInt(101);
+    setTimeout(changeTint, tintDeley);
   }
   if (y >= windowHeight - dvdLogo.height || y <= 0) {
     ySpeed *= -1;
@@ -87,7 +100,7 @@ function windowResized() {
     y = windowHeight - dvdLogo.height;
     }
     
-    imgTint = randomInt(101);
+    setTimeout(changeTint, tintDeley);
   }
   
 }
