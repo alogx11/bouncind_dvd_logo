@@ -2,7 +2,9 @@
 let x, y;
 let xSpeed, ySpeed;
 let speed;
-let imgTint = [3];
+let imgTint;
+
+
 function preload() {
   dvdLogo = loadImage("./assets/dvd_logo.png");
 }
@@ -12,9 +14,12 @@ function setup() {
   speed = 5;
   xSpeed = speed;
   ySpeed = speed;
-  imgTint = [255, 255, 255];
-  x = 10;
-  y = 10;
+  colorMode(HSB, 100);
+  // generate random number for hue value of hsb
+  imgTint = randomInt(101);
+  // creat random starting point for logo
+  x = randomInt(width);
+  y = randomInt(height);
 }
 
 function draw() {
@@ -23,29 +28,40 @@ function draw() {
 }
 
 function drawImage() {
+  // change to random color every time the logo collides with an edge
   if (x > windowWidth - dvdLogo.width || x < 0) {
     xSpeed *= -1;
+    imgTint = randomInt(101);
   }
   if (y > windowHeight - dvdLogo.height || y < 0) {
     ySpeed *= -1;
-  }
-  if (imgTint[1] == 255 && imgTint[2] == 255 && imgTint[0] != 0) {
-    imgTint[0]--;
-  } else if (imgTint[1] == 0 && imgTint[2] == 255 && imgTint[0] < 255) {
-    imgTint[0]++;
-  } else if (imgTint[0] == 0 && imgTint[2] == 255 && imgTint[1] != 0) {
-    imgTint[1]--;
-  } else if (imgTint[0] == 255 && imgTint[2] == 0 && imgTint[1] < 255) {
-    imgTint[1]++;
-  } else if (imgTint[0] == 255 && imgTint[1] == 0 && imgTint[2] != 0) {
-    imgTint[2]--;
-  } else {
-    imgTint[2]++;
+    imgTint = randomInt(101);
   }
   x += xSpeed;
   y += ySpeed;
-  tint(imgTint[0], imgTint[1], imgTint[2]);
+  tint(imgTint, 100, 100);
   image(dvdLogo, x, y);
+}
+
+/*
+generate a random integer value between 0 and max
+preconditions: max must be an int
+
+param: max - value we want our int to be
+
+return random int, if max is null or undefined return 0;
+
+*/
+function randomInt(max){
+  // check if max is not null or undefined
+  if(Object.is(max, null) || Object.is(max, undefined)){
+    return 0;
+    // check if max is an int
+  } else if (!Number.isInteger(max)){
+    return 0;
+  }
+  // we have a valid max int\
+  return Math.floor(Math.random() * max);
 }
 
 function windowResized() {
